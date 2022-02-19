@@ -8,7 +8,7 @@ export const read = async (req: Request, res: Response) => {
         const records = await Vehicle.findAll();
         return res.status(200).json(records);
     } catch (e) {
-        return res.status(500).json({ error: "Fail to read"});
+        return res.status(500).json({ error: e});
     }
 }
 
@@ -19,12 +19,12 @@ export const readById = async (req: Request, res: Response) => {
         const record = await Vehicle.findOne({ where: { id } });
 
         if (!record) {
-            return res.status(400).json({ error: "Can not find existing record" });
+            return res.status(400).json({ error: "Can not find existing vehicle" });
         }
 
         return res.status(200).json(record);
     } catch (e) {
-        return res.status(500).json({ error: "Fail to read by id"});
+        return res.status(500).json({ error: e});
     }
 }
 
@@ -35,7 +35,7 @@ export const create = async (req: Request, res: Response) => {
         const record = await Vehicle.create(req.body.id ? { ...req.body} : { ...req.body, id });
         return res.status(200).json(record);
     } catch (e) {
-        return res.status(500).json({ error: "Fail to create"});
+        return res.status(500).json({ error: e});
     }
 }
 
@@ -47,8 +47,24 @@ export const update = async (req: Request, res: Response) => {
 
         const record = await Vehicle.findOne({ where: { id } });
 
+        const placaAlreadyExists =  await Vehicle.findOne({ where: { placa } })
+        const chassiAlreadyExists = await Vehicle.findOne({ where: { chassi } })
+        const renavamAlreadyExists = await Vehicle.findOne({ where: { renavam } })
+
         if (!record) {
-            return res.status(400).json({ error: "Can not find existing record" });
+            return res.status(400).json({ error: "Can not find existing vehicle" });
+        }
+
+        if(placaAlreadyExists){
+            return res.status(400).json({ error: "The informed --- placa --- already exists in another vehicle" });
+        }
+
+        if(chassiAlreadyExists){
+            return res.status(400).json({ error: "The informed --- chassi --- already exists in another vehicle" });
+        }
+
+        if(renavamAlreadyExists){
+            return res.status(400).json({ error: "The informed --- renavam --- already exists in another vehicle" });
         }
 
         const updatedRecord = await record.update({                
@@ -62,7 +78,7 @@ export const update = async (req: Request, res: Response) => {
 
         return res.status(200).json({ record: updatedRecord });
     } catch (e) {
-        return res.status(500).json({error: "Fail to update"});
+        return res.status(500).json({error: e});
     }
 }
 
@@ -73,12 +89,12 @@ export const destroy = async (req: Request, res: Response) => {
         const record = await Vehicle.findOne({ where: { id } });
 
         if (!record) {
-            return res.status(400).json({ error: "Can not find existing record" });
+            return res.status(400).json({ error: "Can not find existing vehicle" });
         }
 
         const deletedRecord = await record.destroy();
         return res.status(200).json({ record: deletedRecord });
     } catch (e) {
-        return res.status(500).json({error: "Fail to destroy"});
+        return res.status(500).json({error: e});
     }
 }
