@@ -42,7 +42,7 @@ class VehicleValidator {
     checkUpdateVehicle() {
 		return [
 			body('id')
-				.notEmpty()
+                .optional()
 				.isUUID(4)
 				.withMessage('The "id" field must be UUID v4'),
             body('placa')
