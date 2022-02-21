@@ -4,19 +4,25 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts"
+    "start": "tsnd src/server.ts",
+    "test": "mocha --require ts-node/register ./test/Vehicle.test.ts"
   },
   "dependencies": {
+    "@types/mocha": "^9.1.0",
+    "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.4",
     "express": "^4.17.1",
     "express-validator": "^6.14.0",
+    "mocha": "^9.2.1",
     "sequelize": "^6.16.2",
     "sqlite3": "^5.0.2",
+    "supertest": "^6.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.7",
     "sequelize-cli": "^6.4.1",
+    "ts-node": "^10.5.0",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.9.7"
   }

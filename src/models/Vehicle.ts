@@ -1,17 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../database/Sequelize';
 
-interface VehicleAttributes {
-    id:string;
-    placa:string;
-    chassi:string;
-    renavam:number;
-    modelo:string;
-    marca:string;
-    ano:number;
-}
-
-export class Vehicle extends Model<VehicleAttributes> {}
+export class Vehicle extends Model { }
 
 Vehicle.init(
 	{
@@ -24,23 +14,23 @@ Vehicle.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-        chassi: {
+		chassi: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-        renavam: {
+		renavam: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-        modelo: {
+		modelo: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-        marca: {
+		marca: {
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-        ano: {
+		ano: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
