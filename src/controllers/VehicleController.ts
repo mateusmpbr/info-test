@@ -1,6 +1,5 @@
+import { randomUUID } from "crypto";
 import { Request, Response } from "express";
-
-import { v4 as uuidv4 } from "uuid";
 import { Vehicle } from "../models/Vehicle";
 
 export const read = async (req: Request, res: Response) => {
@@ -28,7 +27,7 @@ export const readById = async (req: Request, res: Response) => {
 };
 
 export const create = async (req: Request, res: Response) => {
-  const id = uuidv4();
+  const id = randomUUID();
   try {
     const { placa, chassi, renavam } = req.body;
 
