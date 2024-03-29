@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Request, Response } from "express";
-import { Vehicle } from "../models/Vehicle";
+import { Vehicle } from "../infra/models/Vehicle";
 
 export const read = async (req: Request, res: Response) => {
   try {

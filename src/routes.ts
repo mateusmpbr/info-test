@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as VehicleController from "./controllers/VehicleController";
-import VehicleValidator from "./validators/VehicleValidator";
-import VehicleMiddleware from "./middlewares/VehicleMiddleware";
+import VehicleValidator from "./infra/validators/VehicleValidator";
+import VehicleMiddleware from "./infra/middlewares/VehicleMiddleware";
 
 const router = Router();
 

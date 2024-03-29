@@ -1,5 +1,5 @@
 import { app } from "./app";
-import db from "./database/Sequelize";
+import db from "./infra/database/Sequelize";
 
 db.sync().then(() => {
   console.log("Connected to db");
