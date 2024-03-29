@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../database/Sequelize";
 
-export class Vehicle extends Model {
+export class VehicleModel extends Model {
   id: string;
   placa: string;
   chassi: string;
@@ -11,7 +11,7 @@ export class Vehicle extends Model {
   ano: number;
 }
 
-Vehicle.init(
+VehicleModel.init(
   {
     id: {
       type: DataTypes.UUIDV4,

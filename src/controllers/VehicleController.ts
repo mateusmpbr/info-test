@@ -1,10 +1,12 @@
 import { randomUUID } from "crypto";
 import { Request, Response } from "express";
-import { Vehicle } from "../infra/models/Vehicle";
+import { VehicleModel } from "../infra/models/Vehicle";
+
+// TODO: esse arquivo está depreciado. Extrair responsabilidades para mapper, controllers, presenters e interactors
 
 export const read = async (req: Request, res: Response) => {
   try {
-    const records = await Vehicle.findAll();
+    const records = await VehicleModel.findAll();
     return res.status(200).json(records);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -14,7 +16,7 @@ export const read = async (req: Request, res: Response) => {
 export const readById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const record = await Vehicle.findOne({ where: { id: id } });
+    const record = await VehicleModel.findOne({ where: { id: id } });
 
     if (!record) {
       return res.status(400).json({ error: "Can not find existing vehicle" });
@@ -31,7 +33,7 @@ export const create = async (req: Request, res: Response) => {
   try {
     const { placa, chassi, renavam } = req.body;
 
-    const record = await Vehicle.create(
+    const record = await VehicleModel.create(
       req.body.id ? { ...req.body } : { ...req.body, id }
     );
     return res.status(200).json(record);
@@ -45,7 +47,7 @@ export const update = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { placa, chassi, renavam, modelo, marca, ano } = req.body;
 
-    const record = await Vehicle.findOne({ where: { id: id } });
+    const record = await VehicleModel.findOne({ where: { id: id } });
 
     if (!record) {
       return res.status(400).json({ error: "Can not find existing vehicle" });
@@ -69,7 +71,7 @@ export const update = async (req: Request, res: Response) => {
 export const destroy = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const record = await Vehicle.findOne({ where: { id: id } });
+    const record = await VehicleModel.findOne({ where: { id: id } });
 
     if (!record) {
       return res.status(400).json({ error: "Can not find existing vehicle" });

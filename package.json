@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "tsnd src/server.ts",
+    "start": "tsnd src/index.ts",
     "test": "mocha --require ts-node/register ./test/Vehicle.test.ts"
   },
   "keywords": [],

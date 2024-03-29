@@ -1,6 +1,7 @@
 import { body, param } from "express-validator";
-import { Vehicle } from "../models/Vehicle";
+import { VehicleModel } from "../models/Vehicle";
 
+// TODO: validar isso dentro do interactor. Talvez usar Ajv para validações que não dependem de ir no banco de dados
 class VehicleValidator {
   checkCreateVehicle() {
     return [
@@ -9,12 +10,14 @@ class VehicleValidator {
         .isUUID(4)
         .withMessage("The --- id --- field must be UUID v4")
         .custom((value) => {
-          return Vehicle.findOne({ where: { id: value } }).then((vehicle) => {
-            if (vehicle)
-              return Promise.reject(
-                "The informed --- id --- already exists in another vehicle"
-              );
-          });
+          return VehicleModel.findOne({ where: { id: value } }).then(
+            (vehicle) => {
+              if (vehicle)
+                return Promise.reject(
+                  "The informed --- id --- already exists in another vehicle"
+                );
+            }
+          );
         }),
       body("placa")
         .notEmpty()
@@ -24,7 +27,7 @@ class VehicleValidator {
           "The --- placa --- field must be a string with 7 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { placa: value } }).then(
+          return VehicleModel.findOne({ where: { placa: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
@@ -41,7 +44,7 @@ class VehicleValidator {
           "The --- chassi --- field must be a string with 17 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { chassi: value } }).then(
+          return VehicleModel.findOne({ where: { chassi: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
@@ -58,7 +61,7 @@ class VehicleValidator {
           "The --- renavam --- field must be a number between 9 and 11 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { renavam: value } }).then(
+          return VehicleModel.findOne({ where: { renavam: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
@@ -92,12 +95,14 @@ class VehicleValidator {
         .isUUID(4)
         .withMessage("The --- id --- field must be UUID v4")
         .custom((value) => {
-          return Vehicle.findOne({ where: { id: value } }).then((vehicle) => {
-            if (vehicle)
-              return Promise.reject(
-                "The informed --- id --- already exists in another vehicle"
-              );
-          });
+          return VehicleModel.findOne({ where: { id: value } }).then(
+            (vehicle) => {
+              if (vehicle)
+                return Promise.reject(
+                  "The informed --- id --- already exists in another vehicle"
+                );
+            }
+          );
         }),
       body("placa")
         .optional()
@@ -107,7 +112,7 @@ class VehicleValidator {
           "The --- placa --- field must be a string with 7 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { placa: value } }).then(
+          return VehicleModel.findOne({ where: { placa: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
@@ -124,7 +129,7 @@ class VehicleValidator {
           "The --- chassi --- field must be a string with 17 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { chassi: value } }).then(
+          return VehicleModel.findOne({ where: { chassi: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
@@ -141,7 +146,7 @@ class VehicleValidator {
           "The --- renavam --- field must be a number between 9 and 11 characters"
         )
         .custom((value) => {
-          return Vehicle.findOne({ where: { renavam: value } }).then(
+          return VehicleModel.findOne({ where: { renavam: value } }).then(
             (vehicle) => {
               if (vehicle)
                 return Promise.reject(
