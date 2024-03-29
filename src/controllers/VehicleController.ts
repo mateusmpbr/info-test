@@ -54,12 +54,12 @@ export const update = async (req: Request, res: Response) => {
         }
 
         const updatedRecord = await record.update({                
-            placa: placa || record.getDataValue("placa"),
-            chassi: chassi || record.getDataValue("chassi"),
-            renavam: renavam || record.getDataValue("renavam"),
-            modelo: modelo || record.getDataValue("modelo"),
-            marca: marca || record.getDataValue("marca"),
-            ano: ano || record.getDataValue("ano"),
+            placa: placa || record.placa,
+            chassi: chassi || record.chassi,
+            renavam: renavam || record.renavam,
+            modelo: modelo || record.modelo,
+            marca: marca || record.marca,
+            ano: ano || record.ano,
         });
 
         return res.status(200).json({ record: updatedRecord });

@@ -1,7 +1,15 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '../database/Sequelize';
 
-export class Vehicle extends Model { }
+export class Vehicle extends Model {
+	id: string; 
+	placa: string;
+	chassi: string;
+	renavam: number;
+	modelo: string;
+	marca: string;
+	ano: number;
+}
 
 Vehicle.init(
 	{
