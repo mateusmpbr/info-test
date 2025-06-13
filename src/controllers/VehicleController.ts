@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Request, Response } from "express";
-import { VehicleModel } from "../infra/models/Vehicle";
+import { VehicleModel } from "@models/vehicle.model";
 
 // TODO: esse arquivo está depreciado. Extrair responsabilidades para mapper, controllers, presenters e interactors
 

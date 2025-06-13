@@ -1,11 +1,11 @@
 import {
   IVehicleMapper,
   IVehicleUpdateData,
-} from "../../adapters/common/dtos/vehicle.dto";
-import { Vehicle } from "../../entities/Vehicle";
-import { VehicleModel } from "../models/Vehicle";
+} from "@adapters/common/dtos/vehicle.dto";
+import { Vehicle } from "@entities/vehicle";
+import { VehicleModel } from "@models/vehicle.model";
 
-class VehicleMapper implements IVehicleMapper {
+export class VehicleMapper implements IVehicleMapper {
   public async create(vehicle: Vehicle): Promise<Vehicle> {
     const row = await VehicleModel.create({
       id: vehicle.id,

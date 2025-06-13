@@ -1,7 +1,9 @@
 import { body, param } from "express-validator";
-import { VehicleModel } from "../models/Vehicle";
+import { VehicleModel } from "@models/vehicle.model";
 
 // TODO: validar isso dentro do interactor. Talvez usar Ajv para validações que não dependem de ir no banco de dados
+// Verificar commit do dia 13/06/2025 e ver conteúdo do arquivo routes.ts que foi removido
+// Isso vai ajudar a identificar quais validações deverão ser feitas em cada interactor
 class VehicleValidator {
   checkCreateVehicle() {
     return [

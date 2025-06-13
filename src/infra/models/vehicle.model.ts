@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import db from "../database/Sequelize";
+import dbConnection from "@infra/config/database/connection";
 
 export class VehicleModel extends Model {
   id: string;
@@ -44,7 +44,7 @@ VehicleModel.init(
     },
   },
   {
-    sequelize: db,
+    sequelize: dbConnection,
     tableName: "vehicles",
   }
 );

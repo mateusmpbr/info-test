@@ -5,7 +5,16 @@
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@adapters/*": ["adapters/*"],
+      "@useCases/*": ["use-cases/*"],
+      "@entities/*": ["entities/*"],
+      "@infra/*": ["infra/*"],
+      "@routes/*": ["infra/server/routes/*"],
+      "@models/*": ["infra/models/*"]
+    }
   },
   "include": ["src/**/*.ts"]
 }
