@@ -2,12 +2,7 @@ import { Router } from "express";
 
 const vehicle = Router();
 
-function toKebabCase(name: string) {
-  return name
-    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-    .replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
-    .toLowerCase();
-}
+import { toKebabCase } from "../../../utils/string";
 
 function executeRule(ruleName: string): any {
   const folder = toKebabCase(ruleName);
