@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "tsnd src/index.ts",
-    "test": "mocha --require ts-node/register ./test/Vehicle.test.ts"
+    "test": "mocha --require ts-node/register --require tsconfig-paths/register ./test/Vehicle.test.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.3"
   }
 }

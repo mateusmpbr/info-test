@@ -11,10 +11,12 @@ const app = express();
 app.use(express.json());
 app.use(router);
 
-// TODO: talvez esse ".listen" pode causar conflitos com os testes de integração
-// Se for o caso, separar novamente esse arquivo entre app.ts e index.ts
-app.listen(3333, () => {
-  console.log("Server is running on port 3333");
-});
+// Mantemos o servidor iniciável apenas quando executado diretamente.
+// Isso evita que `require`/`import` durante testes dispare um listen duplo.
+if (require.main === module) {
+  app.listen(3333, () => {
+    console.log("Server is running on port 3333");
+  });
+}
 
 export { app };
