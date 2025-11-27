@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
-import { VehicleModel } from "@models/vehicle.model";
 import { ValidationError } from "../../shared/errors";
 import { CreateVehicleDTO } from "./create-vehicle.dto";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository";
 
 function isUUIDv4(value: any) {
   return (
@@ -12,7 +12,10 @@ function isUUIDv4(value: any) {
   );
 }
 
-export async function execute(payload: CreateVehicleDTO) {
+export async function execute(
+  payload: CreateVehicleDTO,
+  repo: VehicleRepository
+) {
   if (!payload) throw new ValidationError("Missing payload");
 
   if (payload.id && !isUUIDv4(payload.id)) {
@@ -68,41 +71,35 @@ export async function execute(payload: CreateVehicleDTO) {
     );
   }
 
-  // uniqueness checks
+  // uniqueness checks using repository
   if (payload.id) {
-    const exists = await VehicleModel.findOne({ where: { id: payload.id } });
+    const exists = await repo.findById(payload.id);
     if (exists)
       throw new ValidationError(
         "The informed id already exists in another vehicle"
       );
   }
 
-  const byPlaca = await VehicleModel.findOne({
-    where: { placa: payload.placa },
-  });
+  const byPlaca = await repo.findByPlaca(payload.placa);
   if (byPlaca)
     throw new ValidationError(
       "The informed placa already exists in another vehicle"
     );
 
-  const byChassi = await VehicleModel.findOne({
-    where: { chassi: payload.chassi },
-  });
+  const byChassi = await repo.findByChassi(payload.chassi);
   if (byChassi)
     throw new ValidationError(
       "The informed chassi already exists in another vehicle"
     );
 
-  const byRenavam = await VehicleModel.findOne({
-    where: { renavam: payload.renavam },
-  });
+  const byRenavam = await repo.findByRenavam(payload.renavam);
   if (byRenavam)
     throw new ValidationError(
       "The informed renavam already exists in another vehicle"
     );
 
   const id = payload.id || randomUUID();
-  const record = await VehicleModel.create({ ...payload, id });
+  const record = await repo.create({ ...payload, id });
   return record;
 }
 

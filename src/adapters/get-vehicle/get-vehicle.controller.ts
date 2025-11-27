@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import execute from "@useCases/get-vehicle/get-vehicle.interactor";
+import { SequelizeVehicleRepository } from "@infra/repositories/sequelize-vehicle.repository";
 import presenter from "./get-vehicle.presenter";
 import { GetVehicleDTO } from "@useCases/get-vehicle/get-vehicle.dto";
 
@@ -7,7 +8,7 @@ export const run = async (req: Request, res: Response) => {
   try {
     const id = req.params?.id;
     const dto: GetVehicleDTO = { id };
-    const record = await execute(dto.id);
+    const record = await execute(dto.id, SequelizeVehicleRepository);
     if (!record)
       return res.status(400).json({ error: "Can not find existing vehicle" });
     return res.status(200).json(presenter.show(record));

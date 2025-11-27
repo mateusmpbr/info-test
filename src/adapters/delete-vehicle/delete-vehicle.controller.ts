@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import execute from "@useCases/delete-vehicle/delete-vehicle.interactor";
+import { SequelizeVehicleRepository } from "@infra/repositories/sequelize-vehicle.repository";
 import presenter from "./delete-vehicle.presenter";
 import { DeleteVehicleDTO } from "@useCases/delete-vehicle/delete-vehicle.dto";
 
@@ -7,7 +8,7 @@ export const run = async (req: Request, res: Response) => {
   try {
     const id = req.params?.id;
     const dto: DeleteVehicleDTO = { id };
-    const deleted = await execute(dto.id);
+    const deleted = await execute(dto.id, SequelizeVehicleRepository);
     if (!deleted)
       return res.status(400).json({ error: "Can not find existing vehicle" });
     return res.status(200).json(presenter.show(deleted));

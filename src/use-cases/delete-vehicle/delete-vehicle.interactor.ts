@@ -1,5 +1,5 @@
-import { VehicleModel } from "@models/vehicle.model";
 import { ValidationError } from "../../shared/errors";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository";
 
 function isUUIDv4(value: any) {
   return (
@@ -10,17 +10,16 @@ function isUUIDv4(value: any) {
   );
 }
 
-export async function execute(id: string) {
+export async function execute(id: string, repo: VehicleRepository) {
   if (!id || !isUUIDv4(id)) {
     throw new ValidationError("The id field must be UUID v4");
   }
 
-  const record = await VehicleModel.findOne({ where: { id } });
+  const record = await repo.findById(id);
   if (!record) return null;
 
-  // preserve the record payload to return after deletion
-  const payload = record.get({ plain: true });
-  await record.destroy();
+  const payload = record;
+  await repo.delete(id);
   return payload;
 }
 

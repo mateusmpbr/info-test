@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import execute from "@useCases/update-vehicle/update-vehicle.interactor";
+import { SequelizeVehicleRepository } from "@infra/repositories/sequelize-vehicle.repository";
 import presenter from "./update-vehicle.presenter";
 import { UpdateVehicleDTO } from "@useCases/update-vehicle/update-vehicle.dto";
 
@@ -16,7 +17,7 @@ export const run = async (req: Request, res: Response) => {
       ano: req.body?.ano,
     };
 
-    const updated = await execute(id, payload);
+    const updated = await execute(id, payload, SequelizeVehicleRepository);
     if (!updated)
       return res.status(400).json({ error: "Can not find existing vehicle" });
     return res.status(200).json(presenter.show(updated));

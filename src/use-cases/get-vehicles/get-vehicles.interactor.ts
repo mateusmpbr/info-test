@@ -1,7 +1,7 @@
-import { VehicleModel } from "@models/vehicle.model";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository";
 
-export async function execute() {
-  const records = await VehicleModel.findAll();
+export async function execute(repo: VehicleRepository) {
+  const records = await repo.findAll();
   return records;
 }
 

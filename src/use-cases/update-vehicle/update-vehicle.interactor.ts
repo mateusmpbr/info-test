@@ -1,6 +1,6 @@
-import { VehicleModel } from "@models/vehicle.model";
 import { ValidationError } from "../../shared/errors";
 import { UpdateVehicleDTO } from "./update-vehicle.dto";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository";
 
 function isUUIDv4(value: any) {
   return (
@@ -11,7 +11,11 @@ function isUUIDv4(value: any) {
   );
 }
 
-export async function execute(id: string, payload: UpdateVehicleDTO) {
+export async function execute(
+  id: string,
+  payload: UpdateVehicleDTO,
+  repo: VehicleRepository
+) {
   if (!id || !isUUIDv4(id)) {
     throw new ValidationError("The id field must be UUID v4");
   }
@@ -55,11 +59,11 @@ export async function execute(id: string, payload: UpdateVehicleDTO) {
   }
 
   // uniqueness checks - ensure other records don't use same unique fields
-  const record = await VehicleModel.findOne({ where: { id } });
+  const record = await repo.findById(id);
   if (!record) return null;
 
   if (payload.id) {
-    const exists = await VehicleModel.findOne({ where: { id: payload.id } });
+    const exists = await repo.findById(payload.id);
     if (exists && exists.id !== id)
       throw new ValidationError(
         "The informed id already exists in another vehicle"
@@ -67,9 +71,7 @@ export async function execute(id: string, payload: UpdateVehicleDTO) {
   }
 
   if (payload.placa) {
-    const exists = await VehicleModel.findOne({
-      where: { placa: payload.placa },
-    });
+    const exists = await repo.findByPlaca(payload.placa);
     if (exists && exists.id !== id)
       throw new ValidationError(
         "The informed placa already exists in another vehicle"
@@ -77,9 +79,7 @@ export async function execute(id: string, payload: UpdateVehicleDTO) {
   }
 
   if (payload.chassi) {
-    const exists = await VehicleModel.findOne({
-      where: { chassi: payload.chassi },
-    });
+    const exists = await repo.findByChassi(payload.chassi);
     if (exists && exists.id !== id)
       throw new ValidationError(
         "The informed chassi already exists in another vehicle"
@@ -87,16 +87,14 @@ export async function execute(id: string, payload: UpdateVehicleDTO) {
   }
 
   if (payload.renavam) {
-    const exists = await VehicleModel.findOne({
-      where: { renavam: payload.renavam },
-    });
+    const exists = await repo.findByRenavam(payload.renavam as any);
     if (exists && exists.id !== id)
       throw new ValidationError(
         "The informed renavam already exists in another vehicle"
       );
   }
 
-  const updated = await record.update({ ...payload });
+  const updated = await repo.update(id, { ...payload } as any);
   return updated;
 }
 
