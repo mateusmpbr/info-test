@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "tsnd src/index.ts",
+    "start": "tsnd -r tsconfig-paths/register src/index.ts",
     "test:api": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/api/*.ts",
     "test:all": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/**/*.ts",
     "test": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/unit/*.ts"

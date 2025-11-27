@@ -1,6 +1,8 @@
 import express from "express";
 import { router } from "@infra/server/router";
 import db from "@infra/config/database/connection";
+// Ensure models are imported and registered with Sequelize before syncing
+import "@models/vehicle.model";
 
 db.sync().then(() => {
   console.log("Connected to db");

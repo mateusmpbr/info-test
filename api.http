@@ -1,0 +1,86 @@
+###
+@host = http://localhost:3333
+
+### Create vehicle (valid)
+POST {{host}}/vehicles
+Content-Type: application/json
+
+{
+  "id": "00000000-0000-4000-8000-000000000001",
+  "placa": "ABC1234",
+  "chassi": "7qs1yhxs0fq5uq7hs",
+  "renavam": "0123456789",
+  "modelo": "Tiggo 8",
+  "marca": "Caoa Chery",
+  "ano": 2022
+}
+
+### Create vehicle (missing required fields - expect 400)
+POST {{host}}/vehicles
+Content-Type: application/json
+
+{
+  "modelo": "Tiggo 8",
+  "marca": "Caoa Chery"
+}
+
+### Create vehicle (duplicate unique fields - expect 400)
+POST {{host}}/vehicles
+Content-Type: application/json
+
+{
+  "id": "00000000-0000-4000-8000-000000000002",
+  "placa": "ABC1234",
+  "chassi": "7qs1yhxs0fq5uq7hs",
+ "renavam": "0123456789",
+  "modelo": "Tiggo 8",
+  "marca": "Caoa Chery",
+  "ano": 2022
+}
+
+### List vehicles
+GET {{host}}/vehicles
+
+### Get vehicle by id (valid)
+GET {{host}}/vehicles/00000000-0000-4000-8000-000000000001
+
+### Get vehicle by id (invalid id format - expect 400)
+GET {{host}}/vehicles/invalid-id
+
+### Update vehicle (partial update)
+PUT {{host}}/vehicles/00000000-0000-4000-8000-000000000001
+Content-Type: application/json
+
+{
+  "placa": "UPD1234",
+  "modelo": "Tiggo X"
+}
+
+### Update vehicle (unique conflict - expect 400)
+PUT {{host}}/vehicles/00000000-0000-4000-8000-000000000001
+Content-Type: application/json
+
+{
+  "placa": "ZAB1234"
+}
+
+### Delete vehicle (create temporary then delete)
+# First create a temporary record (use a valid v4 UUID)
+POST {{host}}/vehicles
+Content-Type: application/json
+
+{
+  "id": "11111111-1111-4111-8111-111111111111",
+  "placa": "DEL1234",
+  "chassi": "0qs1yhxs0fq5uq7hs",
+  "renavam": "77788899900",
+  "modelo": "Ka",
+  "marca": "Ford",
+  "ano": 2019
+}
+
+### Delete temporary vehicle (expect 200)
+DELETE {{host}}/vehicles/11111111-1111-4111-8111-111111111111
+
+### Delete non-existent vehicle (expect 400)
+DELETE {{host}}/vehicles/00000000-0000-0000-0000-000000000000
