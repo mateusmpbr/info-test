@@ -20,7 +20,7 @@ export interface VehicleRepository {
     criteria: Partial<{
       placa: string;
       chassi: string;
-      renavam: string | number;
+      renavam: string;
     }>
   ): Promise<VehicleRecord | null>;
   findAll(): Promise<VehicleRecord[]>;

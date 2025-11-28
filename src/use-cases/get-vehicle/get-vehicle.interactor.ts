@@ -1,5 +1,5 @@
 import { ValidationError } from "../../shared/errors";
-import { VehicleRepository } from "@useCases/ports/vehicle.repository";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import { isUUIDv4 } from "../../shared/utils";
 
 export async function execute(id: string, repo: VehicleRepository) {

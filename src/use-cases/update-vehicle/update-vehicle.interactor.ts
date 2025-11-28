@@ -1,6 +1,6 @@
 import { ValidationError } from "../../shared/errors";
 import { UpdateVehicleDTO } from "./update-vehicle.dto";
-import { VehicleRepository } from "@useCases/ports/vehicle.repository";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import {
   isUUIDv4,
   isPayloadEmpty,

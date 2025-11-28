@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import {
   VehicleRepository,
   VehicleRecord,
-} from "@useCases/ports/vehicle.repository";
+} from "@useCases/ports/vehicle.repository.dto";
 
 // TODO: melhorar repositório
 const map = (m: any): VehicleRecord => m.get({ plain: true }) as VehicleRecord;

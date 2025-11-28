@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { ValidationError } from "../../shared/errors";
 import { CreateVehicleDTO } from "./create-vehicle.dto";
-import { VehicleRepository } from "@useCases/ports/vehicle.repository";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import {
   isPlaca,
   isChassi,

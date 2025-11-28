@@ -2,7 +2,7 @@ import { describe, it } from "mocha";
 import assert from "assert";
 import { CreateVehicleDTO } from "../../src/use-cases/create-vehicle/create-vehicle.dto";
 import { execute as createExecute } from "../../src/use-cases/create-vehicle/create-vehicle.interactor";
-import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository";
+import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("CreateVehicle interactor", () => {
   it("creates when repository has no conflicts", async () => {
