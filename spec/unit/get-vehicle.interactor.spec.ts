@@ -1,7 +1,7 @@
 import { describe, it } from "mocha";
 import assert from "assert";
 import { execute as getVehicleExecute } from "../../src/use-cases/get-vehicle/get-vehicle.interactor";
-import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository";
+import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("GetVehicle interactor", () => {
   it("returns a record when found", async () => {

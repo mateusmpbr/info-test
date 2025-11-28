@@ -7,9 +7,9 @@
   },
   "scripts": {
     "start": "tsnd -r tsconfig-paths/register src/index.ts",
+    "test:unit": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/unit/*.ts",
     "test:api": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/api/*.ts",
-    "test:all": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/**/*.ts",
-    "test": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/unit/*.ts"
+    "test": "mocha --require ts-node/register --require tsconfig-paths/register ./spec/**/*.ts"
   },
   "keywords": [],
   "author": "",

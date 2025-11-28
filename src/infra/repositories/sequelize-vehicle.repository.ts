@@ -1,50 +1,32 @@
 import { VehicleModel } from "@models/vehicle.model";
-import { Op } from "sequelize";
+import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
+import { VehicleMapper } from "@infra/mappers/sql-vehicle-mapper";
 import {
-  VehicleRepository,
-  VehicleRecord,
-} from "@useCases/ports/vehicle.repository.dto";
+  IVehicleMapper,
+  IVehicleUpdateData,
+} from "@adapters/common/dtos/vehicle.dto";
+import { Vehicle } from "@entities/Vehicle.entity";
 
-// TODO: melhorar repositório
-const map = (m: any): VehicleRecord => m.get({ plain: true }) as VehicleRecord;
+const mapper: IVehicleMapper = new VehicleMapper();
 
 export const SequelizeVehicleRepository: VehicleRepository = {
   async findById(id: string) {
-    const rec = await VehicleModel.findOne({ where: { id } });
-    return rec ? map(rec) : null;
+    return await mapper.find(id);
   },
   async findByUnique(criteria) {
-    const { placa, chassi, renavam } = criteria;
-
-    const conditions = [
-      placa && { placa },
-      chassi && { chassi },
-      renavam && { renavam },
-    ].filter(Boolean);
-
-    if (conditions.length === 0) return null;
-
-    const rec = await VehicleModel.findOne({ where: { [Op.or]: conditions } });
-    return rec ? map(rec) : null;
+    return await mapper.findByUnique(criteria);
   },
   async findAll() {
-    const records = await VehicleModel.findAll();
-    return records.map(map);
+    return await mapper.findAll();
   },
-  async create(payload: Partial<VehicleRecord>) {
-    const rec = await VehicleModel.create(payload as any);
-    return map(rec);
+  async create(vehicle: Vehicle) {
+    return await mapper.create(vehicle);
   },
-  async update(id: string, payload: Partial<VehicleRecord>) {
-    const rec = await VehicleModel.findOne({ where: { id } });
-    if (!rec) throw new Error("Not found");
-    const updated = await rec.update(payload as any);
-    return map(updated);
+  async update(data: IVehicleUpdateData, id: string) {
+    await mapper.update(data, id);
   },
   async delete(id: string) {
-    const rec = await VehicleModel.findOne({ where: { id } });
-    if (!rec) return;
-    await rec.destroy();
+    await mapper.delete(id);
   },
 };
 

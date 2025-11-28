@@ -5,7 +5,7 @@ export class VehicleModel extends Model {
   id: string;
   placa: string;
   chassi: string;
-  renavam: number;
+  renavam: string;
   modelo: string;
   marca: string;
   ano: number;

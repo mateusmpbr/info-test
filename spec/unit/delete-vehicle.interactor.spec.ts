@@ -1,7 +1,7 @@
 import { describe, it } from "mocha";
 import assert from "assert";
 import { execute as deleteExecute } from "../../src/use-cases/delete-vehicle/delete-vehicle.interactor";
-import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository";
+import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("DeleteVehicle interactor", () => {
   it("deletes and returns payload when found", async () => {

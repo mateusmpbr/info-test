@@ -10,6 +10,7 @@ import {
   isYear,
   isPayloadEmpty,
 } from "../../shared/utils";
+import { Vehicle } from "@entities/Vehicle.entity";
 
 export async function execute(
   payload: CreateVehicleDTO,
@@ -60,7 +61,17 @@ export async function execute(
     );
 
   const id = randomUUID();
-  await repo.create({ ...payload, id });
+  await repo.create(
+    Vehicle.build({
+      id,
+      placa: payload.placa,
+      chassi: payload.chassi,
+      renavam: payload.renavam,
+      modelo: payload.modelo,
+      marca: payload.marca,
+      ano: payload.ano,
+    })
+  );
   return id;
 }
 

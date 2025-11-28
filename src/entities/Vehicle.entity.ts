@@ -2,7 +2,7 @@ export interface VehicleProps {
   id: string;
   placa: string;
   chassi: string;
-  renavam: number;
+  renavam: string;
   modelo: string;
   marca: string;
   ano: number;
@@ -35,7 +35,7 @@ export class Vehicle {
     return this.props.chassi;
   }
 
-  public get renavam(): number {
+  public get renavam(): string {
     return this.props.renavam;
   }
 
