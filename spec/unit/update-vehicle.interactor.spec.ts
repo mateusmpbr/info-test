@@ -2,7 +2,7 @@ import { describe, it } from "mocha";
 import assert from "assert";
 import { execute as updateExecute } from "../../src/use-cases/update-vehicle/update-vehicle.interactor";
 import { UpdateVehicleDTO } from "../../src/use-cases/update-vehicle/update-vehicle.dto";
-import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository";
+import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("UpdateVehicle interactor", () => {
   it("updates when record exists and no uniqueness conflicts", async () => {
