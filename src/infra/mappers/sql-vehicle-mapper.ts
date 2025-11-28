@@ -2,7 +2,7 @@ import {
   IVehicleMapper,
   IVehicleUpdateData,
 } from "@adapters/common/dtos/vehicle.dto";
-import { Vehicle } from "@entities/vehicle";
+import { Vehicle } from "@entities/Vehicle.entity";
 import { VehicleModel } from "@models/vehicle.model";
 
 export class VehicleMapper implements IVehicleMapper {

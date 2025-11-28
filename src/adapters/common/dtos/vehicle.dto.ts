@@ -1,4 +1,4 @@
-import { Vehicle } from "@entities/vehicle";
+import { Vehicle } from "@entities/Vehicle.entity";
 
 export interface IVehicleUpdateData {
   placa?: string;
