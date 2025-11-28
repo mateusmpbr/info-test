@@ -31,36 +31,30 @@ export class ConflictError extends HttpError {
   }
 }
 
-// TODO: remover ValidationError. É desnecessário
-export class ValidationError extends BadRequestError {
-  constructor(message = "Validation error", details?: any) {
-    super(message, details);
-    this.name = "ValidationError";
-  }
-}
 
-export class InvalidIdError extends ValidationError {
+
+export class InvalidIdError extends BadRequestError {
   constructor() {
     super("The id field must be UUID v4");
     this.name = "InvalidIdError";
   }
 }
 
-export class InvalidPlacaError extends ValidationError {
+export class InvalidPlacaError extends BadRequestError {
   constructor() {
     super("The placa field must be a string with 7 characters");
     this.name = "InvalidPlacaError";
   }
 }
 
-export class InvalidChassiError extends ValidationError {
+export class InvalidChassiError extends BadRequestError {
   constructor() {
     super("The chassi field must be a string with 17 characters");
     this.name = "InvalidChassiError";
   }
 }
 
-export class InvalidRenavamError extends ValidationError {
+export class InvalidRenavamError extends BadRequestError {
   constructor() {
     super(
       "The renavam field must be a numeric string between 9 and 11 characters"
@@ -85,28 +79,28 @@ export class UniqueFieldConflictError extends ConflictError {
   }
 }
 
-export class MissingPayloadError extends ValidationError {
+export class MissingPayloadError extends BadRequestError {
   constructor() {
     super("Missing payload");
     this.name = "MissingPayloadError";
   }
 }
 
-export class InvalidModeloError extends ValidationError {
+export class InvalidModeloError extends BadRequestError {
   constructor() {
     super("The modelo field must be a string");
     this.name = "InvalidModeloError";
   }
 }
 
-export class InvalidMarcaError extends ValidationError {
+export class InvalidMarcaError extends BadRequestError {
   constructor() {
     super("The marca field must be a string");
     this.name = "InvalidMarcaError";
   }
 }
 
-export class InvalidAnoError extends ValidationError {
+export class InvalidAnoError extends BadRequestError {
   constructor() {
     super("The ano field must be a number with 4 characters");
     this.name = "InvalidAnoError";

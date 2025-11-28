@@ -1,5 +1,5 @@
 import {
-  ValidationError,
+  BadRequestError,
   NotFoundError,
   ConflictError,
 } from "../../shared/errors";
@@ -14,7 +14,7 @@ export function show(err: any) {
   if (err?.details) payload.details = err.details;
 
   // Provide a small machine-friendly code for some known error types
-  if (err instanceof ValidationError) payload.code = "validation_error";
+  if (err instanceof BadRequestError) payload.code = "validation_error";
   else if (err instanceof NotFoundError) payload.code = "not_found";
   else if (err instanceof ConflictError) payload.code = "conflict";
   else payload.code = "error";
