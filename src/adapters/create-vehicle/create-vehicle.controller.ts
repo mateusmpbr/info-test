@@ -7,7 +7,6 @@ import { CreateVehicleDTO } from "@useCases/create-vehicle/create-vehicle.dto";
 export const run = async (req: Request, res: Response) => {
   try {
     const payload: CreateVehicleDTO = {
-      id: req.body?.id,
       placa: req.body?.placa,
       chassi: req.body?.chassi,
       renavam: req.body?.renavam,

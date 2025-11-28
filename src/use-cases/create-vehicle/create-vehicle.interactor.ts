@@ -72,13 +72,6 @@ export async function execute(
   }
 
   // uniqueness checks using repository
-  if (payload.id) {
-    const exists = await repo.findById(payload.id);
-    if (exists)
-      throw new ValidationError(
-        "The informed id already exists in another vehicle"
-      );
-  }
 
   const byPlaca = await repo.findByPlaca(payload.placa);
   if (byPlaca)
@@ -98,7 +91,7 @@ export async function execute(
       "The informed renavam already exists in another vehicle"
     );
 
-  const id = payload.id || randomUUID();
+  const id = randomUUID();
   const record = await repo.create({ ...payload, id });
   return record;
 }

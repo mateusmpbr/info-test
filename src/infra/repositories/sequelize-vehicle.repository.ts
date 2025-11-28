@@ -4,6 +4,7 @@ import {
   VehicleRecord,
 } from "@useCases/ports/vehicle.repository";
 
+// TODO: melhorar repositório
 const map = (m: any): VehicleRecord => m.get({ plain: true }) as VehicleRecord;
 
 export const SequelizeVehicleRepository: VehicleRepository = {

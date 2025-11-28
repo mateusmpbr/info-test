@@ -21,14 +21,17 @@ VehicleModel.init(
     placa: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     chassi: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     renavam: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique: true,
     },
     modelo: {
       type: DataTypes.STRING,
