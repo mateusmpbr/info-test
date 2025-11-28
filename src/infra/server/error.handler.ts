@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import presenter from "@adapters/presenters/error.presenter";
 
 export function errorHandler(
   err: any,
@@ -7,12 +8,15 @@ export function errorHandler(
   _next: NextFunction
 ) {
   const status = err && typeof err.status === "number" ? err.status : 500;
-  const payload =
-    err && (err.details || err.message) ? err.details || err.message : err;
-  if (typeof status === "number") {
-    return res.status(status).json({ errors: payload });
+  try {
+    const payload = presenter.show(err);
+    return res.status(status).json(payload);
+  } catch (presenterErr) {
+    // Fallback if presenter fails for some reason
+    const fallback =
+      err && (err.details || err.message) ? err.details || err.message : err;
+    return res.status(status).json({ errors: fallback });
   }
-  return res.status(500).json({ error: err });
 }
 
 export default errorHandler;
