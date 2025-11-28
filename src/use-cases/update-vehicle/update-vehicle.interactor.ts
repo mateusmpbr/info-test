@@ -1,15 +1,13 @@
 import { ValidationError } from "../../shared/errors";
 import { UpdateVehicleDTO } from "./update-vehicle.dto";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository";
-
-function isUUIDv4(value: any) {
-  return (
-    typeof value === "string" &&
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(
-      value
-    )
-  );
-}
+import {
+  isUUIDv4,
+  isPayloadEmpty,
+  isPlaca,
+  isChassi,
+  isRenavam,
+} from "../../shared/utils";
 
 export async function execute(
   id: string,
@@ -20,7 +18,7 @@ export async function execute(
     throw new ValidationError("The id field must be UUID v4");
   }
 
-  if (!payload || Object.keys(payload).length === 0) {
+  if (isPayloadEmpty(payload)) {
     throw new ValidationError("Missing payload");
   }
 
@@ -29,30 +27,19 @@ export async function execute(
     throw new ValidationError("The id field must be UUID v4");
   }
 
-  if (
-    payload.placa &&
-    (typeof payload.placa !== "string" || payload.placa.length !== 7)
-  ) {
+  if (payload.placa && !isPlaca(payload.placa)) {
     throw new ValidationError(
       "The placa field must be a string with 7 characters"
     );
   }
 
-  if (
-    payload.chassi &&
-    (typeof payload.chassi !== "string" || payload.chassi.length !== 17)
-  ) {
+  if (payload.chassi && !isChassi(payload.chassi)) {
     throw new ValidationError(
       "The chassi field must be a string with 17 characters"
     );
   }
 
-  if (
-    payload.renavam &&
-    (!/^\d+$/.test(String(payload.renavam)) ||
-      String(payload.renavam).length < 9 ||
-      String(payload.renavam).length > 11)
-  ) {
+  if (payload.renavam && !isRenavam(payload.renavam)) {
     throw new ValidationError(
       "The renavam field must be a number between 9 and 11 characters"
     );

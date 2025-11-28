@@ -2,66 +2,48 @@ import { randomUUID } from "crypto";
 import { ValidationError } from "../../shared/errors";
 import { CreateVehicleDTO } from "./create-vehicle.dto";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository";
-
-function isUUIDv4(value: any) {
-  return (
-    typeof value === "string" &&
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(
-      value
-    )
-  );
-}
+import {
+  isPlaca,
+  isChassi,
+  isRenavam,
+  isString,
+  isYear,
+  isPayloadEmpty,
+} from "../../shared/utils";
 
 export async function execute(
   payload: CreateVehicleDTO,
   repo: VehicleRepository
 ) {
-  if (!payload) throw new ValidationError("Missing payload");
+  if (isPayloadEmpty(payload)) throw new ValidationError("Missing payload");
 
-  if (
-    !payload.placa ||
-    typeof payload.placa !== "string" ||
-    payload.placa.length !== 7
-  ) {
+  if (!isPlaca(payload.placa)) {
     throw new ValidationError(
       "The placa field must be a string with 7 characters"
     );
   }
 
-  if (
-    !payload.chassi ||
-    typeof payload.chassi !== "string" ||
-    payload.chassi.length !== 17
-  ) {
+  if (!isChassi(payload.chassi)) {
     throw new ValidationError(
       "The chassi field must be a string with 17 characters"
     );
   }
 
-  if (
-    !payload.renavam ||
-    !/^\d+$/.test(String(payload.renavam)) ||
-    String(payload.renavam).length < 9 ||
-    String(payload.renavam).length > 11
-  ) {
+  if (!isRenavam(payload.renavam)) {
     throw new ValidationError(
       "The renavam field must be a number between 9 and 11 characters"
     );
   }
 
-  if (!payload.modelo || typeof payload.modelo !== "string") {
+  if (!isString(payload.modelo)) {
     throw new ValidationError("The modelo field must be a string");
   }
 
-  if (!payload.marca || typeof payload.marca !== "string") {
+  if (!isString(payload.marca)) {
     throw new ValidationError("The marca field must be a string");
   }
 
-  if (
-    payload.ano === undefined ||
-    payload.ano === null ||
-    !/^\d{4}$/.test(String(payload.ano))
-  ) {
+  if (!isYear(payload.ano)) {
     throw new ValidationError(
       "The ano field must be a number with 4 characters"
     );
