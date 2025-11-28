@@ -18,10 +18,6 @@ export async function execute(
 ) {
   if (!payload) throw new ValidationError("Missing payload");
 
-  if (payload.id && !isUUIDv4(payload.id)) {
-    throw new ValidationError("The id field must be UUID v4");
-  }
-
   if (
     !payload.placa ||
     typeof payload.placa !== "string" ||
