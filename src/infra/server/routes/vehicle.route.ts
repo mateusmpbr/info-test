@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const vehicle = Router();
 
-import { toKebabCase } from "../../../utils/string";
+import { toKebabCase } from "../../../shared/utils";
 
 function executeRule(ruleName: string): any {
   const folder = toKebabCase(ruleName);

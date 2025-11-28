@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import assert from "assert";
-import { toKebabCase } from "../../src/utils/string";
+import { toKebabCase } from "../../src/shared/utils";
 
 describe("toKebabCase util", () => {
   const cases: Array<[string, string]> = [
