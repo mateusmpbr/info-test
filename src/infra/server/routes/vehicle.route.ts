@@ -4,7 +4,7 @@ const vehicle = Router();
 
 import { toKebabCase } from "../../../shared/utils";
 
-function executeRule(ruleName: string): any {
+export function executeRule(ruleName: string): any {
   const folder = toKebabCase(ruleName);
   const modulePath = `../../../adapters/${folder}/${folder}.controller`;
 
