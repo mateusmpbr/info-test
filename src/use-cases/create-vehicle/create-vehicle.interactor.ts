@@ -69,22 +69,14 @@ export async function execute(
 
   // uniqueness checks using repository
 
-  const byPlaca = await repo.findByPlaca(payload.placa);
-  if (byPlaca)
+  const conflict = await repo.findByUnique({
+    placa: payload.placa,
+    chassi: payload.chassi,
+    renavam: payload.renavam,
+  });
+  if (conflict)
     throw new ValidationError(
-      "The informed placa already exists in another vehicle"
-    );
-
-  const byChassi = await repo.findByChassi(payload.chassi);
-  if (byChassi)
-    throw new ValidationError(
-      "The informed chassi already exists in another vehicle"
-    );
-
-  const byRenavam = await repo.findByRenavam(payload.renavam);
-  if (byRenavam)
-    throw new ValidationError(
-      "The informed renavam already exists in another vehicle"
+      "One of the informed placa, chassi or renavam already exists in another vehicle"
     );
 
   const id = randomUUID();

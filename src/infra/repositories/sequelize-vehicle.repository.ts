@@ -1,4 +1,5 @@
 import { VehicleModel } from "@models/vehicle.model";
+import { Op } from "sequelize";
 import {
   VehicleRepository,
   VehicleRecord,
@@ -12,16 +13,18 @@ export const SequelizeVehicleRepository: VehicleRepository = {
     const rec = await VehicleModel.findOne({ where: { id } });
     return rec ? map(rec) : null;
   },
-  async findByPlaca(placa: string) {
-    const rec = await VehicleModel.findOne({ where: { placa } });
-    return rec ? map(rec) : null;
-  },
-  async findByChassi(chassi: string) {
-    const rec = await VehicleModel.findOne({ where: { chassi } });
-    return rec ? map(rec) : null;
-  },
-  async findByRenavam(renavam: string | number) {
-    const rec = await VehicleModel.findOne({ where: { renavam } });
+  async findByUnique(criteria) {
+    const { placa, chassi, renavam } = criteria;
+
+    const conditions = [
+      placa && { placa },
+      chassi && { chassi },
+      renavam && { renavam },
+    ].filter(Boolean);
+
+    if (conditions.length === 0) return null;
+
+    const rec = await VehicleModel.findOne({ where: { [Op.or]: conditions } });
     return rec ? map(rec) : null;
   },
   async findAll() {

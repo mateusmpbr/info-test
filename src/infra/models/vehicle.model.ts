@@ -29,7 +29,7 @@ VehicleModel.init(
       unique: true,
     },
     renavam: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },

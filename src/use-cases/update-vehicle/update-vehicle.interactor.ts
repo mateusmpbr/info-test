@@ -70,27 +70,16 @@ export async function execute(
       );
   }
 
-  if (payload.placa) {
-    const exists = await repo.findByPlaca(payload.placa);
-    if (exists && exists.id !== id)
-      throw new ValidationError(
-        "The informed placa already exists in another vehicle"
-      );
-  }
+  const uniqueCriteria: any = {};
+  if (payload.placa) uniqueCriteria.placa = payload.placa;
+  if (payload.chassi) uniqueCriteria.chassi = payload.chassi;
+  if (payload.renavam) uniqueCriteria.renavam = payload.renavam;
 
-  if (payload.chassi) {
-    const exists = await repo.findByChassi(payload.chassi);
+  if (Object.keys(uniqueCriteria).length > 0) {
+    const exists = await repo.findByUnique(uniqueCriteria);
     if (exists && exists.id !== id)
       throw new ValidationError(
-        "The informed chassi already exists in another vehicle"
-      );
-  }
-
-  if (payload.renavam) {
-    const exists = await repo.findByRenavam(payload.renavam as any);
-    if (exists && exists.id !== id)
-      throw new ValidationError(
-        "The informed renavam already exists in another vehicle"
+        "One of the informed placa, chassi or renavam already exists in another vehicle"
       );
   }
 

@@ -11,9 +11,7 @@ describe("UpdateVehicle interactor", () => {
 
     const repo: VehicleRepository = {
       findById: async (i) => ({ id: i, placa: "OLD" } as any),
-      findByPlaca: async () => null,
-      findByChassi: async () => null,
-      findByRenavam: async () => null,
+      findByUnique: async () => null,
       findAll: async () => [],
       create: async () => ({} as any),
       update: async (i, p) => ({ id: i, ...(p as any) } as any),
@@ -31,9 +29,7 @@ describe("UpdateVehicle interactor", () => {
 
     const repo: VehicleRepository = {
       findById: async () => null,
-      findByPlaca: async () => null,
-      findByChassi: async () => null,
-      findByRenavam: async () => null,
+      findByUnique: async () => null,
       findAll: async () => [],
       create: async () => ({} as any),
       update: async () => ({} as any),
@@ -50,9 +46,7 @@ describe("UpdateVehicle interactor", () => {
 
     const repo: VehicleRepository = {
       findById: async (i) => ({ id: i, placa: "OLD" } as any),
-      findByPlaca: async () => ({ id: "other" } as any),
-      findByChassi: async () => null,
-      findByRenavam: async () => null,
+      findByUnique: async () => ({ id: "other" } as any),
       findAll: async () => [],
       create: async () => ({} as any),
       update: async () => ({} as any),
