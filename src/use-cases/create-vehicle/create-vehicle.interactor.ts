@@ -1,5 +1,14 @@
 import { randomUUID } from "crypto";
-import { ValidationError } from "../../shared/errors";
+import {
+  MissingPayloadError,
+  InvalidPlacaError,
+  InvalidChassiError,
+  InvalidRenavamError,
+  InvalidModeloError,
+  InvalidMarcaError,
+  InvalidAnoError,
+  UniqueFieldConflictError,
+} from "../../shared/errors";
 import {
   CreateVehicleInputDTO,
   CreateVehicleOutputDTO,
@@ -19,39 +28,30 @@ export async function execute(
   input: CreateVehicleInputDTO,
   repo: VehicleRepository
 ): Promise<CreateVehicleOutputDTO> {
-  if (isPayloadEmpty(input)) throw new ValidationError("Missing payload");
+  if (isPayloadEmpty(input)) throw new MissingPayloadError();
 
   if (!isPlaca(input.placa)) {
-    throw new ValidationError(
-      "The placa field must be a string with 7 characters"
-    );
+    throw new InvalidPlacaError();
   }
 
   if (!isChassi(input.chassi)) {
-    throw new ValidationError(
-      "The chassi field must be a string with 17 characters"
-    );
+    throw new InvalidChassiError();
   }
 
-  // TODO: melhorar mensagem de erro (tipo é string, não number)
   if (!isRenavam(input.renavam)) {
-    throw new ValidationError(
-      "The renavam field must be a number between 9 and 11 characters"
-    );
+    throw new InvalidRenavamError();
   }
 
   if (!isString(input.modelo)) {
-    throw new ValidationError("The modelo field must be a string");
+    throw new InvalidModeloError();
   }
 
   if (!isString(input.marca)) {
-    throw new ValidationError("The marca field must be a string");
+    throw new InvalidMarcaError();
   }
 
   if (!isYear(input.ano)) {
-    throw new ValidationError(
-      "The ano field must be a number with 4 characters"
-    );
+    throw new InvalidAnoError();
   }
 
   const conflict = await repo.findByUnique({
@@ -60,9 +60,7 @@ export async function execute(
     renavam: input.renavam,
   });
   if (conflict) {
-    throw new ValidationError(
-      "One of the informed placa, chassi or renavam already exists in another vehicle"
-    );
+    throw new UniqueFieldConflictError();
   }
 
   const id = randomUUID();

@@ -1,4 +1,11 @@
-import { ValidationError } from "../../shared/errors";
+import {
+  InvalidIdError,
+  InvalidPlacaError,
+  InvalidChassiError,
+  InvalidRenavamError,
+  VehicleNotFoundError,
+  UniqueFieldConflictError,
+} from "../../shared/errors";
 import { UpdateVehicleInputDTO } from "./update-vehicle.dto";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import { isUUIDv4, isPlaca, isChassi, isRenavam } from "../../shared/utils";
@@ -8,31 +15,25 @@ export async function execute(
   repo: VehicleRepository
 ): Promise<void> {
   if (!input.id || !isUUIDv4(input.id)) {
-    throw new ValidationError("The id field must be UUID v4");
+    throw new InvalidIdError();
   }
 
   if (input.placa && !isPlaca(input.placa)) {
-    throw new ValidationError(
-      "The placa field must be a string with 7 characters"
-    );
+    throw new InvalidPlacaError();
   }
 
   if (input.chassi && !isChassi(input.chassi)) {
-    throw new ValidationError(
-      "The chassi field must be a string with 17 characters"
-    );
+    throw new InvalidChassiError();
   }
 
   if (input.renavam && !isRenavam(input.renavam)) {
-    throw new ValidationError(
-      "The renavam field must be a number between 9 and 11 characters"
-    );
+    throw new InvalidRenavamError();
   }
 
   const vehicle = await repo.findById(input.id);
 
   if (!vehicle) {
-    throw new ValidationError("Vehicle not found");
+    throw new VehicleNotFoundError();
   }
 
   const exists = await repo.findByUnique({
@@ -41,9 +42,7 @@ export async function execute(
     renavam: input.renavam,
   });
   if (exists && exists.id !== input.id) {
-    throw new ValidationError(
-      "One of the informed placa, chassi or renavam already exists in another vehicle"
-    );
+    throw new UniqueFieldConflictError();
   }
 
   await repo.update(
