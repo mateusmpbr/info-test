@@ -1,4 +1,13 @@
-// No input required for get-vehicles, keep an explicit empty DTO for clarity
-export interface GetVehiclesDTO {}
+export interface GetVehiclesInputDTO {}
 
-export default GetVehiclesDTO;
+export interface GetVehiclesOutputDTO {
+  vehicles: {
+    id: string;
+    placa: string;
+    chassi: string;
+    renavam: string;
+    modelo: string;
+    marca: string;
+    ano: number;
+  }[];
+}

@@ -1,5 +1,13 @@
-export interface GetVehicleDTO {
+export interface GetVehicleInputDTO {
   id: string;
 }
 
-export default GetVehicleDTO;
+export interface GetVehicleOutputDTO {
+  id: string;
+  placa: string;
+  chassi: string;
+  renavam: string;
+  modelo: string;
+  marca: string;
+  ano: number;
+}

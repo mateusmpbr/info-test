@@ -1,5 +1,3 @@
-export interface DeleteVehicleDTO {
+export interface DeleteVehicleInputDTO {
   id: string;
 }
-
-export default DeleteVehicleDTO;

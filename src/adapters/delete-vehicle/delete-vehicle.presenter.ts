@@ -1,5 +1,5 @@
-export function show(record: any) {
-  return { record };
+export function show(_: any) {
+  return;
 }
 
 export default { show };

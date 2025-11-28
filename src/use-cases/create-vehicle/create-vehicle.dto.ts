@@ -1,4 +1,4 @@
-export interface CreateVehicleDTO {
+export interface CreateVehicleInputDTO {
   placa: string;
   chassi: string;
   renavam: string;
@@ -7,4 +7,6 @@ export interface CreateVehicleDTO {
   ano: number;
 }
 
-export default CreateVehicleDTO;
+export interface CreateVehicleOutputDTO {
+  id: string;
+}

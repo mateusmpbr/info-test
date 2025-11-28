@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import execute from "@useCases/create-vehicle/create-vehicle.interactor";
 import { SequelizeVehicleRepository } from "@infra/repositories/sequelize-vehicle.repository";
 import presenter from "./create-vehicle.presenter";
-import { CreateVehicleDTO } from "@useCases/create-vehicle/create-vehicle.dto";
+import { CreateVehicleInputDTO } from "@useCases/create-vehicle/create-vehicle.dto";
 
 export const run = async (req: Request, res: Response) => {
   try {
-    const payload: CreateVehicleDTO = {
+    const input: CreateVehicleInputDTO = {
       placa: req.body?.placa,
       chassi: req.body?.chassi,
       renavam: req.body?.renavam,
@@ -15,8 +15,8 @@ export const run = async (req: Request, res: Response) => {
       ano: req.body?.ano,
     };
 
-    const id = await execute(payload, SequelizeVehicleRepository);
-    return res.status(200).json(presenter.show(id));
+    const output = await execute(input, SequelizeVehicleRepository);
+    return res.status(200).json(presenter.show(output));
   } catch (e) {
     if (e && (e as any).status === 400) {
       return res

@@ -1,6 +1,9 @@
 import { randomUUID } from "crypto";
 import { ValidationError } from "../../shared/errors";
-import { CreateVehicleDTO } from "./create-vehicle.dto";
+import {
+  CreateVehicleInputDTO,
+  CreateVehicleOutputDTO,
+} from "./create-vehicle.dto";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import {
   isPlaca,
@@ -13,66 +16,68 @@ import {
 import { Vehicle } from "@entities/Vehicle.entity";
 
 export async function execute(
-  payload: CreateVehicleDTO,
+  input: CreateVehicleInputDTO,
   repo: VehicleRepository
-) {
-  if (isPayloadEmpty(payload)) throw new ValidationError("Missing payload");
+): Promise<CreateVehicleOutputDTO> {
+  if (isPayloadEmpty(input)) throw new ValidationError("Missing payload");
 
-  if (!isPlaca(payload.placa)) {
+  if (!isPlaca(input.placa)) {
     throw new ValidationError(
       "The placa field must be a string with 7 characters"
     );
   }
 
-  if (!isChassi(payload.chassi)) {
+  if (!isChassi(input.chassi)) {
     throw new ValidationError(
       "The chassi field must be a string with 17 characters"
     );
   }
 
-  if (!isRenavam(payload.renavam)) {
+  // TODO: melhorar mensagem de erro (tipo é string, não number)
+  if (!isRenavam(input.renavam)) {
     throw new ValidationError(
       "The renavam field must be a number between 9 and 11 characters"
     );
   }
 
-  if (!isString(payload.modelo)) {
+  if (!isString(input.modelo)) {
     throw new ValidationError("The modelo field must be a string");
   }
 
-  if (!isString(payload.marca)) {
+  if (!isString(input.marca)) {
     throw new ValidationError("The marca field must be a string");
   }
 
-  if (!isYear(payload.ano)) {
+  if (!isYear(input.ano)) {
     throw new ValidationError(
       "The ano field must be a number with 4 characters"
     );
   }
 
   const conflict = await repo.findByUnique({
-    placa: payload.placa,
-    chassi: payload.chassi,
-    renavam: payload.renavam,
+    placa: input.placa,
+    chassi: input.chassi,
+    renavam: input.renavam,
   });
-  if (conflict)
+  if (conflict) {
     throw new ValidationError(
       "One of the informed placa, chassi or renavam already exists in another vehicle"
     );
+  }
 
   const id = randomUUID();
   await repo.create(
     Vehicle.build({
       id,
-      placa: payload.placa,
-      chassi: payload.chassi,
-      renavam: payload.renavam,
-      modelo: payload.modelo,
-      marca: payload.marca,
-      ano: payload.ano,
+      placa: input.placa,
+      chassi: input.chassi,
+      renavam: input.renavam,
+      modelo: input.modelo,
+      marca: input.marca,
+      ano: input.ano,
     })
   );
-  return id;
+  return { id };
 }
 
 export default execute;

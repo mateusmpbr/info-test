@@ -1,11 +1,9 @@
-export interface UpdateVehicleDTO {
-  id?: string;
+export interface UpdateVehicleInputDTO {
+  id: string;
   placa?: string;
   chassi?: string;
-  renavam?: string | number;
+  renavam?: string;
   modelo?: string;
   marca?: string;
   ano?: number;
 }
-
-export default UpdateVehicleDTO;

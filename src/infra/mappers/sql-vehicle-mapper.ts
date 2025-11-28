@@ -61,7 +61,17 @@ export class VehicleMapper implements IVehicleMapper {
     return this.toEntity(row);
   }
 
-  public async update(data: IVehicleUpdateData, id: string): Promise<void> {
+  public async update(
+    inputData: IVehicleUpdateData,
+    id: string
+  ): Promise<void> {
+    // To avoid Sequelize update issues with undefined fields
+    const data = JSON.parse(JSON.stringify(inputData));
+
+    if (Object.keys(data).length === 0) {
+      return;
+    }
+
     await VehicleModel.update(data, { where: { id } });
   }
 

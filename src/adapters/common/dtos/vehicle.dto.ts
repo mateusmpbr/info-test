@@ -3,7 +3,7 @@ import { Vehicle } from "@entities/Vehicle.entity";
 export interface IVehicleUpdateData {
   placa?: string;
   chassi?: string;
-  renavam?: number;
+  renavam?: string;
   modelo?: string;
   marca?: string;
   ano?: number;

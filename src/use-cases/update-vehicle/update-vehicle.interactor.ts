@@ -1,77 +1,63 @@
 import { ValidationError } from "../../shared/errors";
-import { UpdateVehicleDTO } from "./update-vehicle.dto";
+import { UpdateVehicleInputDTO } from "./update-vehicle.dto";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
-import {
-  isUUIDv4,
-  isPayloadEmpty,
-  isPlaca,
-  isChassi,
-  isRenavam,
-} from "../../shared/utils";
+import { isUUIDv4, isPlaca, isChassi, isRenavam } from "../../shared/utils";
 
 export async function execute(
-  id: string,
-  payload: UpdateVehicleDTO,
+  input: UpdateVehicleInputDTO,
   repo: VehicleRepository
-) {
-  if (!id || !isUUIDv4(id)) {
+): Promise<void> {
+  if (!input.id || !isUUIDv4(input.id)) {
     throw new ValidationError("The id field must be UUID v4");
   }
 
-  if (isPayloadEmpty(payload)) {
-    throw new ValidationError("Missing payload");
-  }
-
-  // field-level validations (optional fields)
-  if (payload.id && !isUUIDv4(payload.id)) {
-    throw new ValidationError("The id field must be UUID v4");
-  }
-
-  if (payload.placa && !isPlaca(payload.placa)) {
+  if (input.placa && !isPlaca(input.placa)) {
     throw new ValidationError(
       "The placa field must be a string with 7 characters"
     );
   }
 
-  if (payload.chassi && !isChassi(payload.chassi)) {
+  if (input.chassi && !isChassi(input.chassi)) {
     throw new ValidationError(
       "The chassi field must be a string with 17 characters"
     );
   }
 
-  if (payload.renavam && !isRenavam(payload.renavam)) {
+  if (input.renavam && !isRenavam(input.renavam)) {
     throw new ValidationError(
       "The renavam field must be a number between 9 and 11 characters"
     );
   }
 
-  // uniqueness checks - ensure other records don't use same unique fields
-  const record = await repo.findById(id);
-  if (!record) return null;
+  const vehicle = await repo.findById(input.id);
 
-  if (payload.id) {
-    const exists = await repo.findById(payload.id);
-    if (exists && exists.id !== id)
-      throw new ValidationError(
-        "The informed id already exists in another vehicle"
-      );
+  if (!vehicle) {
+    throw new ValidationError("Vehicle not found");
   }
 
-  const uniqueCriteria: any = {};
-  if (payload.placa) uniqueCriteria.placa = payload.placa;
-  if (payload.chassi) uniqueCriteria.chassi = payload.chassi;
-  if (payload.renavam) uniqueCriteria.renavam = payload.renavam;
-
-  if (Object.keys(uniqueCriteria).length > 0) {
-    const exists = await repo.findByUnique(uniqueCriteria);
-    if (exists && exists.id !== id)
-      throw new ValidationError(
-        "One of the informed placa, chassi or renavam already exists in another vehicle"
-      );
+  const exists = await repo.findByUnique({
+    placa: input.placa,
+    chassi: input.chassi,
+    renavam: input.renavam,
+  });
+  if (exists && exists.id !== input.id) {
+    throw new ValidationError(
+      "One of the informed placa, chassi or renavam already exists in another vehicle"
+    );
   }
 
-  const updated = await repo.update(id, { ...payload } as any);
-  return updated;
+  await repo.update(
+    {
+      placa: input.placa,
+      chassi: input.chassi,
+      renavam: input.renavam,
+      modelo: input.modelo,
+      marca: input.marca,
+      ano: input.ano,
+    },
+    input.id
+  );
+  return;
 }
 
 export default execute;
