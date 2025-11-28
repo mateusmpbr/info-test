@@ -10,8 +10,6 @@ export class ValidationError extends Error {
   }
 }
 
-export default ValidationError;
-
 export class InvalidIdError extends ValidationError {
   constructor() {
     super("The id field must be UUID v4");
