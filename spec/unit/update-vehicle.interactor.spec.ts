@@ -1,13 +1,13 @@
 import { describe, it } from "mocha";
 import assert from "assert";
 import { execute as updateExecute } from "../../src/use-cases/update-vehicle/update-vehicle.interactor";
-import { UpdateVehicleDTO } from "../../src/use-cases/update-vehicle/update-vehicle.dto";
+import { UpdateVehicleInputDTO } from "../../src/use-cases/update-vehicle/update-vehicle.dto";
 import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("UpdateVehicle interactor", () => {
   it("updates when record exists and no uniqueness conflicts", async () => {
     const id = "e3988b64-ffc6-4cf5-8d0e-588f0fc3c8da";
-    const payload: UpdateVehicleDTO = { placa: "NEW1234" };
+    const payload = { placa: "NEW1234" };
 
     const repo: VehicleRepository = {
       findById: async (i) => ({ id: i, placa: "OLD" } as any),
@@ -18,14 +18,17 @@ describe("UpdateVehicle interactor", () => {
       delete: async () => {},
     };
 
-    const updated = await updateExecute(id, payload, repo);
-    assert.strictEqual(updated.placa, payload.placa);
-    assert.strictEqual(updated.id, id);
+    const input: UpdateVehicleInputDTO = {
+      id,
+      ...payload,
+    } as UpdateVehicleInputDTO;
+    const result = await updateExecute(input, repo);
+    assert.strictEqual(result, undefined);
   });
 
   it("returns null when record does not exist", async () => {
     const id = "fadd3a1d-5828-41d4-b11a-747c789b5a8b";
-    const payload: UpdateVehicleDTO = { placa: "NEW1234" };
+    const payload = { placa: "NEW1234" };
 
     const repo: VehicleRepository = {
       findById: async () => null,
@@ -36,13 +39,23 @@ describe("UpdateVehicle interactor", () => {
       delete: async () => {},
     };
 
-    const result = await updateExecute(id, payload, repo);
-    assert.strictEqual(result, null);
+    let thrown = false;
+    try {
+      const input: UpdateVehicleInputDTO = {
+        id,
+        ...payload,
+      } as UpdateVehicleInputDTO;
+      await updateExecute(input, repo);
+    } catch (e: any) {
+      thrown = true;
+      assert.strictEqual(e.status, 400);
+    }
+    assert.strictEqual(thrown, true);
   });
 
   it("throws on placa conflict", async () => {
     const id = "existing-id";
-    const payload: UpdateVehicleDTO = { placa: "CONFLICT" };
+    const payload = { placa: "CONFLICT" };
 
     const repo: VehicleRepository = {
       findById: async (i) => ({ id: i, placa: "OLD" } as any),
@@ -55,7 +68,11 @@ describe("UpdateVehicle interactor", () => {
 
     let thrown = false;
     try {
-      await updateExecute(id, payload, repo);
+      const input: UpdateVehicleInputDTO = {
+        id,
+        ...payload,
+      } as UpdateVehicleInputDTO;
+      await updateExecute(input, repo);
     } catch (e: any) {
       thrown = true;
       assert.strictEqual(e.status, 400);

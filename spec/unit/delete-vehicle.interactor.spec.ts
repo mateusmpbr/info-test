@@ -15,8 +15,8 @@ describe("DeleteVehicle interactor", () => {
       delete: async (i) => {},
     };
 
-    const payload = await deleteExecute(id, repo);
-    assert.strictEqual(payload.id, id);
+    const result = await deleteExecute({ id }, repo);
+    assert.strictEqual(result, undefined);
   });
 
   it("returns null when record not found", async () => {
@@ -30,7 +30,13 @@ describe("DeleteVehicle interactor", () => {
       delete: async () => {},
     };
 
-    const result = await deleteExecute(id, repo);
-    assert.strictEqual(result, null);
+    let thrown = false;
+    try {
+      await deleteExecute({ id }, repo);
+    } catch (e: any) {
+      thrown = true;
+      assert.strictEqual(e.status, 400);
+    }
+    assert.strictEqual(thrown, true);
   });
 });

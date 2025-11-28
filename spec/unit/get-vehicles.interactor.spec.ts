@@ -14,8 +14,8 @@ describe("GetVehicles interactor", () => {
       delete: async () => {},
     };
 
-    const records = await getVehiclesExecute(repo);
-    assert.ok(Array.isArray(records));
-    assert.strictEqual(records.length, 1);
+    const records = await getVehiclesExecute({}, repo);
+    assert.ok(Array.isArray(records.vehicles));
+    assert.strictEqual(records.vehicles.length, 1);
   });
 });

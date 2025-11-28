@@ -15,7 +15,7 @@ describe("GetVehicle interactor", () => {
     };
 
     const rec = await getVehicleExecute(
-      "e3988b64-ffc6-4cf5-8d0e-588f0fc3c8da",
+      { id: "e3988b64-ffc6-4cf5-8d0e-588f0fc3c8da" },
       repo
     );
     assert.strictEqual(rec.id, "e3988b64-ffc6-4cf5-8d0e-588f0fc3c8da");
@@ -33,7 +33,7 @@ describe("GetVehicle interactor", () => {
 
     let thrown = false;
     try {
-      await getVehicleExecute("bad-id", repo as any);
+      await getVehicleExecute({ id: "bad-id" }, repo as any);
     } catch (e: any) {
       thrown = true;
       assert.strictEqual(e.status, 400);

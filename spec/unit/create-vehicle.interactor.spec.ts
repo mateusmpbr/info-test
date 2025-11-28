@@ -1,12 +1,12 @@
 import { describe, it } from "mocha";
 import assert from "assert";
-import { CreateVehicleDTO } from "../../src/use-cases/create-vehicle/create-vehicle.dto";
+import { CreateVehicleInputDTO } from "../../src/use-cases/create-vehicle/create-vehicle.dto";
 import { execute as createExecute } from "../../src/use-cases/create-vehicle/create-vehicle.interactor";
 import { VehicleRepository } from "../../src/use-cases/ports/vehicle.repository.dto";
 
 describe("CreateVehicle interactor", () => {
   it("creates when repository has no conflicts", async () => {
-    const payload: CreateVehicleDTO = {
+    const payload: CreateVehicleInputDTO = {
       placa: "ABC1234",
       chassi: "7qs1yhxs0fq5uq7hs",
       renavam: "0123456789",
@@ -25,12 +25,12 @@ describe("CreateVehicle interactor", () => {
     };
 
     const result = await createExecute(payload, repo);
-    assert.strictEqual(typeof result, "string");
-    assert.ok(result.length > 0);
+    assert.strictEqual(typeof result.id, "string");
+    assert.ok(result.id.length > 0);
   });
 
   it("throws on duplicate placa", async () => {
-    const payload: CreateVehicleDTO = {
+    const payload: CreateVehicleInputDTO = {
       placa: "ABC1234",
       chassi: "7qs1yhxs0fq5uq7hs",
       renavam: "0123456789",
