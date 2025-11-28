@@ -5,28 +5,18 @@ import presenter from "./update-vehicle.presenter";
 import { UpdateVehicleInputDTO } from "@useCases/update-vehicle/update-vehicle.dto";
 
 export const run = async (req: Request, res: Response) => {
-  try {
-    const input: UpdateVehicleInputDTO = {
-      id: req.params?.id,
-      placa: req.body?.placa,
-      chassi: req.body?.chassi,
-      renavam: req.body?.renavam,
-      modelo: req.body?.modelo,
-      marca: req.body?.marca,
-      ano: req.body?.ano,
-    };
+  const input: UpdateVehicleInputDTO = {
+    id: req.params?.id,
+    placa: req.body?.placa,
+    chassi: req.body?.chassi,
+    renavam: req.body?.renavam,
+    modelo: req.body?.modelo,
+    marca: req.body?.marca,
+    ano: req.body?.ano,
+  };
 
-    await execute(input, SequelizeVehicleRepository);
-    return res.status(200).json(presenter.show(undefined));
-  } catch (e) {
-    const status = e && (e as any).status;
-    if (typeof status === "number") {
-      return res
-        .status(status)
-        .json({ errors: (e as any).details || (e as any).message });
-    }
-    return res.status(500).json({ error: e });
-  }
+  await execute(input, SequelizeVehicleRepository);
+  return res.status(200).json(presenter.show(undefined));
 };
 
 export default { run };
