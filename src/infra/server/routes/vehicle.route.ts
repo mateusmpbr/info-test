@@ -30,7 +30,7 @@ vehicle.get("/:id", executeRule("getVehicle"));
 
 vehicle.post("/", executeRule("createVehicle"));
 
-vehicle.put("/:id", executeRule("updateVehicle"));
+vehicle.patch("/:id", executeRule("updateVehicle"));
 
 vehicle.delete("/:id", executeRule("deleteVehicle"));
 

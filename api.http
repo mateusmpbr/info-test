@@ -48,7 +48,7 @@ GET {{host}}/vehicles/00000000-0000-4000-8000-000000000001
 GET {{host}}/vehicles/invalid-id
 
 ### Update vehicle (partial update)
-PUT {{host}}/vehicles/00000000-0000-4000-8000-000000000001
+PATCH {{host}}/vehicles/00000000-0000-4000-8000-000000000001
 Content-Type: application/json
 
 {
@@ -57,7 +57,7 @@ Content-Type: application/json
 }
 
 ### Update vehicle (unique conflict - expect 400)
-PUT {{host}}/vehicles/00000000-0000-4000-8000-000000000001
+PATCH {{host}}/vehicles/00000000-0000-4000-8000-000000000001
 Content-Type: application/json
 
 {

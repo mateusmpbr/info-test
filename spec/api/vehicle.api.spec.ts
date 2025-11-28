@@ -94,14 +94,14 @@ describe("Vehicles (integration)", () => {
   describe("Update", () => {
     it("updates an existing vehicle", async () => {
       const res = await request(app)
-        .put(`/vehicles/${VEHICLE_A}`)
+        .patch(`/vehicles/${VEHICLE_A}`)
         .send({ placa: "UPD1234", modelo: "Tiggo X" });
       assert.strictEqual(res.status, 200);
     });
 
     it("returns 404 when updating non-existent vehicle", async () => {
       const res = await request(app)
-        .put("/vehicles/fadd3a1d-5828-41d4-b11a-747c789b5a8b")
+        .patch("/vehicles/fadd3a1d-5828-41d4-b11a-747c789b5a8b")
         .send({});
       assert.strictEqual(res.status, 404);
     });
@@ -109,7 +109,7 @@ describe("Vehicles (integration)", () => {
     it("returns 409 when update would cause uniqueness conflict", async () => {
       // try to update VEHICLE_A to have same placa as VEHICLE_B
       const res = await request(app)
-        .put(`/vehicles/${VEHICLE_A}`)
+        .patch(`/vehicles/${VEHICLE_A}`)
         .send({ placa: vehicleB.placa });
       assert.strictEqual(res.status, 409);
     });

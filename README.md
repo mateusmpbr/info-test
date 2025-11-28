@@ -20,7 +20,7 @@
     - Exibe o veículo com id :id
   - POST `http://localhost:3333/vehicles`
     - Cadastra um veículo com as informações enviadas no formato JSON
-  - PUT `http://localhost:3333/vehicles/:id`
+  - PATCH `http://localhost:3333/vehicles/:id`
     - Atualiza um veículo com id :id e informações enviadas no formato JSON
   - DELETE `http://localhost:3333/vehicles/:id`
     - Deleta um veículo com id :id
