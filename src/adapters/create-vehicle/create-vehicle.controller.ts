@@ -15,8 +15,8 @@ export const run = async (req: Request, res: Response) => {
       ano: req.body?.ano,
     };
 
-    const record = await execute(payload, SequelizeVehicleRepository);
-    return res.status(200).json(presenter.show(record));
+    const id = await execute(payload, SequelizeVehicleRepository);
+    return res.status(200).json(presenter.show(id));
   } catch (e) {
     if (e && (e as any).status === 400) {
       return res

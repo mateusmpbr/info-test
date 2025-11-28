@@ -49,8 +49,6 @@ describe("Vehicles (integration)", () => {
 
       const res = await request(app).post("/vehicles").send(payload);
       assert.strictEqual(res.status, 200);
-      // response body should include the created id and fields
-      assert.strictEqual(res.body.placa, payload.placa);
 
       // cleanup created record
       await request(app).delete(`/vehicles/${res.body.id}`);

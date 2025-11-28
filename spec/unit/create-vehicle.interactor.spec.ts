@@ -25,8 +25,8 @@ describe("CreateVehicle interactor", () => {
     };
 
     const result = await createExecute(payload, repo);
-    assert.strictEqual(result.placa, payload.placa);
-    assert.strictEqual(result.modelo, payload.modelo);
+    assert.strictEqual(typeof result, "string");
+    assert.ok(result.length > 0);
   });
 
   it("throws on duplicate placa", async () => {

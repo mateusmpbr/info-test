@@ -7,9 +7,9 @@ import updatePresenter from "../../src/adapters/update-vehicle/update-vehicle.pr
 
 describe("Presenters", () => {
   it("create presenter returns record as-is", () => {
-    const record = { id: "1", placa: "ABC1234" };
-    const out = createPresenter.show(record);
-    assert.deepStrictEqual(out, record);
+    const id = "1";
+    const out = createPresenter.show(id);
+    assert.deepStrictEqual(out, { id });
   });
 
   it("get presenter returns record as-is", () => {

@@ -49,8 +49,6 @@ export async function execute(
     );
   }
 
-  // uniqueness checks using repository
-
   const conflict = await repo.findByUnique({
     placa: payload.placa,
     chassi: payload.chassi,
@@ -62,8 +60,8 @@ export async function execute(
     );
 
   const id = randomUUID();
-  const record = await repo.create({ ...payload, id });
-  return record;
+  await repo.create({ ...payload, id });
+  return id;
 }
 
 export default execute;
