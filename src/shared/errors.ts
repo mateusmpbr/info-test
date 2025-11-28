@@ -31,8 +31,6 @@ export class ConflictError extends HttpError {
   }
 }
 
-
-
 export class InvalidIdError extends BadRequestError {
   constructor() {
     super("The id field must be UUID v4");
