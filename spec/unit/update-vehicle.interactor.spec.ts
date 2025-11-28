@@ -48,14 +48,14 @@ describe("UpdateVehicle interactor", () => {
       await updateExecute(input, repo);
     } catch (e: any) {
       thrown = true;
-      assert.strictEqual(e.status, 400);
+      assert.strictEqual(e.status, 404);
     }
     assert.strictEqual(thrown, true);
   });
 
   it("throws on placa conflict", async () => {
-    const id = "existing-id";
-    const payload = { placa: "CONFLICT" };
+    const id = "e3988b64-ffc6-4cf5-8d0e-588f0fc3c8da";
+    const payload = { placa: "CON1234" };
 
     const repo: VehicleRepository = {
       findById: async (i) => ({ id: i, placa: "OLD" } as any),
@@ -75,7 +75,7 @@ describe("UpdateVehicle interactor", () => {
       await updateExecute(input, repo);
     } catch (e: any) {
       thrown = true;
-      assert.strictEqual(e.status, 400);
+      assert.strictEqual(e.status, 409);
     }
     assert.strictEqual(thrown, true);
   });

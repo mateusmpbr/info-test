@@ -1,12 +1,41 @@
-export class ValidationError extends Error {
+export class HttpError extends Error {
   public status: number;
   public details?: any;
 
-  constructor(message: string, details?: any) {
+  constructor(message: string, status: number, details?: any) {
     super(message);
-    this.name = "ValidationError";
-    this.status = 400;
+    this.name = "HttpError";
+    this.status = status;
     this.details = details;
+  }
+}
+
+export class BadRequestError extends HttpError {
+  constructor(message = "Bad Request", details?: any) {
+    super(message, 400, details);
+    this.name = "BadRequestError";
+  }
+}
+
+export class NotFoundError extends HttpError {
+  constructor(message = "Not Found", details?: any) {
+    super(message, 404, details);
+    this.name = "NotFoundError";
+  }
+}
+
+export class ConflictError extends HttpError {
+  constructor(message = "Conflict", details?: any) {
+    super(message, 409, details);
+    this.name = "ConflictError";
+  }
+}
+
+// TODO: remover ValidationError. É desnecessário
+export class ValidationError extends BadRequestError {
+  constructor(message = "Validation error", details?: any) {
+    super(message, details);
+    this.name = "ValidationError";
   }
 }
 
@@ -40,14 +69,14 @@ export class InvalidRenavamError extends ValidationError {
   }
 }
 
-export class VehicleNotFoundError extends ValidationError {
+export class VehicleNotFoundError extends NotFoundError {
   constructor() {
     super("Vehicle not found");
     this.name = "VehicleNotFoundError";
   }
 }
 
-export class UniqueFieldConflictError extends ValidationError {
+export class UniqueFieldConflictError extends ConflictError {
   constructor() {
     super(
       "One of the informed placa, chassi or renavam already exists in another vehicle"

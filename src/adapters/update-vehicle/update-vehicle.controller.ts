@@ -19,9 +19,10 @@ export const run = async (req: Request, res: Response) => {
     await execute(input, SequelizeVehicleRepository);
     return res.status(200).json(presenter.show(undefined));
   } catch (e) {
-    if (e && (e as any).status === 400) {
+    const status = e && (e as any).status;
+    if (typeof status === "number") {
       return res
-        .status(400)
+        .status(status)
         .json({ errors: (e as any).details || (e as any).message });
     }
     return res.status(500).json({ error: e });

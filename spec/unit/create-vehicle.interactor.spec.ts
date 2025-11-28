@@ -53,7 +53,7 @@ describe("CreateVehicle interactor", () => {
       await createExecute(payload, repo);
     } catch (e: any) {
       thrown = true;
-      assert.strictEqual(e.status, 400);
+      assert.strictEqual(e.status, 409);
     }
     assert.strictEqual(thrown, true);
   });

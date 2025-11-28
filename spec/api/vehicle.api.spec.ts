@@ -59,12 +59,12 @@ describe("Vehicles (integration)", () => {
       assert.strictEqual(res.status, 400);
     });
 
-    it("returns 400 when attempting to create duplicate unique fields", async () => {
+    it("returns 409 when attempting to create duplicate unique fields", async () => {
       // attempt to create another record with the same placa/chassi/renavam as vehicleB
       const res = await request(app)
         .post("/vehicles")
         .send({ ...vehicleB });
-      assert.strictEqual(res.status, 400);
+      assert.strictEqual(res.status, 409);
     });
   });
 
@@ -99,19 +99,19 @@ describe("Vehicles (integration)", () => {
       assert.strictEqual(res.status, 200);
     });
 
-    it("returns 400 when updating non-existent vehicle", async () => {
+    it("returns 404 when updating non-existent vehicle", async () => {
       const res = await request(app)
-        .put("/vehicles/00000000-0000-0000-0000-000000000000")
-        .send({ placa: "X" });
-      assert.strictEqual(res.status, 400);
+        .put("/vehicles/fadd3a1d-5828-41d4-b11a-747c789b5a8b")
+        .send({});
+      assert.strictEqual(res.status, 404);
     });
 
-    it("returns 400 when update would cause uniqueness conflict", async () => {
+    it("returns 409 when update would cause uniqueness conflict", async () => {
       // try to update VEHICLE_A to have same placa as VEHICLE_B
       const res = await request(app)
         .put(`/vehicles/${VEHICLE_A}`)
         .send({ placa: vehicleB.placa });
-      assert.strictEqual(res.status, 400);
+      assert.strictEqual(res.status, 409);
     });
   });
 
@@ -133,11 +133,11 @@ describe("Vehicles (integration)", () => {
       assert.strictEqual(res.status, 200);
     });
 
-    it("returns 400 when deleting non-existent vehicle", async () => {
+    it("returns 404 when deleting non-existent vehicle", async () => {
       const res = await request(app).delete(
-        "/vehicles/00000000-0000-0000-0000-000000000000"
+        "/vehicles/fadd3a1d-5828-41d4-b11a-747c789b5a8b"
       );
-      assert.strictEqual(res.status, 400);
+      assert.strictEqual(res.status, 404);
     });
   });
 });

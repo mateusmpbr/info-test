@@ -35,7 +35,7 @@ describe("DeleteVehicle interactor", () => {
       await deleteExecute({ id }, repo);
     } catch (e: any) {
       thrown = true;
-      assert.strictEqual(e.status, 400);
+      assert.strictEqual(e.status, 404);
     }
     assert.strictEqual(thrown, true);
   });
