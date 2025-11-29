@@ -14,21 +14,7 @@ export async function execute(
   input: UpdateVehicleInputDTO,
   repo: VehicleRepository
 ): Promise<void> {
-  if (!input.id || !isUUIDv4(input.id)) {
-    throw new InvalidIdError();
-  }
-
-  if (input.placa && !isPlaca(input.placa)) {
-    throw new InvalidPlacaError();
-  }
-
-  if (input.chassi && !isChassi(input.chassi)) {
-    throw new InvalidChassiError();
-  }
-
-  if (input.renavam && !isRenavam(input.renavam)) {
-    throw new InvalidRenavamError();
-  }
+  validateInput(input);
 
   const vehicle = await repo.findById(input.id);
 
@@ -41,6 +27,7 @@ export async function execute(
     chassi: input.chassi,
     renavam: input.renavam,
   });
+
   if (exists && exists.id !== input.id) {
     throw new UniqueFieldConflictError();
   }
@@ -57,6 +44,24 @@ export async function execute(
     input.id
   );
   return;
+}
+
+function validateInput(input: UpdateVehicleInputDTO): void {
+  if (!input.id || !isUUIDv4(input.id)) {
+    throw new InvalidIdError();
+  }
+
+  if (input.placa && !isPlaca(input.placa)) {
+    throw new InvalidPlacaError();
+  }
+
+  if (input.chassi && !isChassi(input.chassi)) {
+    throw new InvalidChassiError();
+  }
+
+  if (input.renavam && !isRenavam(input.renavam)) {
+    throw new InvalidRenavamError();
+  }
 }
 
 export default execute;

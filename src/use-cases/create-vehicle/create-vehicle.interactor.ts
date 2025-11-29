@@ -28,7 +28,37 @@ export async function execute(
   input: CreateVehicleInputDTO,
   repo: VehicleRepository
 ): Promise<CreateVehicleOutputDTO> {
-  if (isPayloadEmpty(input)) throw new MissingPayloadError();
+  validateInput(input);
+
+  const conflict = await repo.findByUnique({
+    placa: input.placa,
+    chassi: input.chassi,
+    renavam: input.renavam,
+  });
+
+  if (conflict) {
+    throw new UniqueFieldConflictError();
+  }
+
+  const id = randomUUID();
+  await repo.create(
+    Vehicle.build({
+      id,
+      placa: input.placa,
+      chassi: input.chassi,
+      renavam: input.renavam,
+      modelo: input.modelo,
+      marca: input.marca,
+      ano: input.ano,
+    })
+  );
+  return { id };
+}
+
+function validateInput(input: CreateVehicleInputDTO): void {
+  if (isPayloadEmpty(input)) {
+    throw new MissingPayloadError();
+  }
 
   if (!isPlaca(input.placa)) {
     throw new InvalidPlacaError();
@@ -53,29 +83,6 @@ export async function execute(
   if (!isYear(input.ano)) {
     throw new InvalidAnoError();
   }
-
-  const conflict = await repo.findByUnique({
-    placa: input.placa,
-    chassi: input.chassi,
-    renavam: input.renavam,
-  });
-  if (conflict) {
-    throw new UniqueFieldConflictError();
-  }
-
-  const id = randomUUID();
-  await repo.create(
-    Vehicle.build({
-      id,
-      placa: input.placa,
-      chassi: input.chassi,
-      renavam: input.renavam,
-      modelo: input.modelo,
-      marca: input.marca,
-      ano: input.ano,
-    })
-  );
-  return { id };
 }
 
 export default execute;

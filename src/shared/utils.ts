@@ -5,8 +5,6 @@ export function toKebabCase(name: string) {
     .toLowerCase();
 }
 
-export default toKebabCase;
-
 export function isUUIDv4(value: any) {
   return (
     typeof value === "string" &&

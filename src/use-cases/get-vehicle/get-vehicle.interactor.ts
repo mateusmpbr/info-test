@@ -1,4 +1,4 @@
-import { InvalidIdError } from "../../shared/errors";
+import { InvalidIdError, VehicleNotFoundError } from "../../shared/errors";
 import { VehicleRepository } from "@useCases/ports/vehicle.repository.dto";
 import { isUUIDv4 } from "../../shared/utils";
 import { GetVehicleInputDTO, GetVehicleOutputDTO } from "./get-vehicle.dto";
@@ -12,6 +12,11 @@ export async function execute(
   }
 
   const vehicle = await repo.findById(input.id);
+
+  if (!vehicle) {
+    throw new VehicleNotFoundError();
+  }
+
   return {
     id: vehicle.id,
     placa: vehicle.placa,
